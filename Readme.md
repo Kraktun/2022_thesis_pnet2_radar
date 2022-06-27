@@ -12,7 +12,7 @@ The predicted markers and point clouds (if the model has multiple outputs) are s
 
 Tested with Tensorflow 2.5 and 2.7.
 
-Pointnet2 is written in pure python so it can run on any OS, as done for [pytorch](https://github.com/yanx27/Pointnet_Pointnet2_pytorch). 
+[Pointnet2](https://github.com/charlesq34/pointnet2) is written in pure python so it can run on any OS, as done for [pytorch](https://github.com/yanx27/Pointnet_Pointnet2_pytorch). 
 
 The code expects this folder structure:
 
