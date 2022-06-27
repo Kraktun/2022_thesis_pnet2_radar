@@ -1,0 +1,39 @@
+{
+    "dataset_dir": "../datasets/2021-12-17_deis/cl_256pc_random_cut29_train",
+    "val_dir": "../datasets/2021-12-17_deis/cl_256pc_random_cut29_val",
+    "max_points": 256, # points in each frame
+    "skip_train_set": 0, # number of sequences to remove at the beginning of the training set
+    "reduce_train_set": -1, # number of sequences to use for the training set
+    "skip_val_set": 0, # number of sequences to remove at the beginning of the val set
+    "reduce_val_set": -1, # number of sequences to use for the val set
+    "time_steps": 30, # number of frames to build a subsequence
+    "time_steps_stride": 5, # number of frames between two subsequent subsequences (i.e. in this case they overlap by 25)
+    "val_ds_from_train": false, # extract val ds from train ds, effective only if val_dir is not provided
+    "val_ds_percent": 0.1, # percentage of the train ds to use for validation, if enabled
+    "marker_last_frame": true, # use only last frame from marker sequences for the computation of the loss
+    # for the following parameters refer to data_map_funcs
+    "dataset_shift_apply": false,
+    "dataset_shift_append": true,
+    "dataset_shift_prob": 1.0,
+    "dataset_shift_interval": [
+        -2,
+        2
+    ],
+    "dataset_center_seq": true,
+    "dataset_center_seq_mode": "current",
+    "dataset_center_seq_dims": [
+        0,
+        1,
+        2
+    ],
+    "dataset_shuffle": false,
+    "dataset_normalization_apply": false,
+    "dataset_normalization_axis": [
+        0,
+        1,
+        2
+    ],
+    "dataset_normalization_xyz": false,
+    "dataset_normalization_sequence": false,
+    "dataset_normalize_after_center_seq": true # true to apply normalization after a sequence has been centered
+}

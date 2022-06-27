@@ -1,0 +1,38 @@
+{
+    "preproc_prefix": "cluster",
+    "preproc_name": "NEW_DS_BASE_1",
+    "preproc_type": "generic",
+    "preproc_out_time_steps": null,
+    "preproc_out_time_steps_stride": null,
+    "preproc_standardize": false,
+    "preproc_skip_standardization_axis": [],
+    "preproc_keep_features": [
+        0,
+        1,
+        2
+    ],
+    "preproc_add_channel": false,
+    "preproc_random_shift": false,
+    "preproc_random_shift_prob": 0.2,
+    "preproc_random_shift_interval": [
+        -0.3,
+        0.3
+    ],
+    "preproc_random_perm": false,
+    "preproc_random_perm_prob": 0.1,
+    "preproc_random_perm_axis": [
+        1,
+        2,
+        3
+    ],
+    "preproc_eps": 1e-06,
+    "preproc_random_shuffle": true,
+    "preproc_random_shuffle_prob": 0.3,
+    "preproc_random_rotation": false,
+    "preproc_random_rotation_prob": 0.3,
+    "preproc_random_rotation_angles": [
+        [-0.25,0.25],
+        [-0.25,0.25],
+        [-0.25,0.25]
+    ]
+}

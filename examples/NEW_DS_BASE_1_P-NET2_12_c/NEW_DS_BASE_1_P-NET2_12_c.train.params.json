@@ -1,0 +1,15 @@
+{
+    "train_batch_size": 16,
+    "train_epochs": 1000,
+    "callbacks": {
+        "print_time": {
+            "timedelta": 0
+        },
+        "checkpoints": {
+            "monitor": "val_loss",
+            "mode": "min"
+        }
+    },
+	"load_from_checkpoint": false,
+	"checkpoint_mode": "best"
+}

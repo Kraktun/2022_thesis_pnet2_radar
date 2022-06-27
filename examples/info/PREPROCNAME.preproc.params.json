@@ -1,0 +1,48 @@
+{
+    "preproc_prefix": "local", # whatever you want 
+    "preproc_name": "PREPROCNAME", # must match both the folder and the json file, use NEW_DS_BASE_1
+    "preproc_type": "generic", # keep this one
+    "preproc_out_time_steps": null, # keep null, unless you need to process the input for a different time step/stride combination
+    "preproc_out_time_steps_stride": null, # keep null
+    "preproc_standardize": false, # true to standardize the value, not suggested
+    "preproc_skip_standardization_axis": [], # skip columns to standardize
+    "preproc_keep_features": [ # features to keep, the first three are the x,y,z axis, 3 is the velocity. Set abstraction layers use all the others as features in input.
+        0,
+        1,
+        2
+    ],
+    "preproc_add_channel": false, # add an additional dimension, not necessary
+    # the following options are similar to those in dataset.params.json but are applied during training only to the point clouds, not the markers
+    "preproc_random_shift": false, 
+    "preproc_random_shift_prob": 0.2,
+    "preproc_random_shift_interval": [
+        -0.3,
+        0.3
+    ],
+    "preproc_random_perm": false,
+    "preproc_random_perm_prob": 0.1,
+    "preproc_random_perm_axis": [
+        1,
+        2,
+        3
+    ],
+    "preproc_eps": 1e-06, # ignore this
+    "preproc_random_shuffle": false,
+    "preproc_random_shuffle_prob": 0.3,
+    "preproc_random_rotation": false,
+    "preproc_random_rotation_prob": 0.3,
+    "preproc_random_rotation_angles": [
+        [
+            -0.25,
+            0.25
+        ],
+        [
+            -0.25,
+            0.25
+        ],
+        [
+            -0.25,
+            0.25
+        ]
+    ]
+}

@@ -1,0 +1,99 @@
+{
+    "model_prefix": "local", # whatever you want
+    "model_name": "MODELNAME", # must match both the folder and the json file, must start with P-NET2 for pnet2 models
+    "model_type": "supervised", # unsupervised or supervised
+    "model_enc_type": "pointnet2", # one among 'pointnet1', 'pointnet1_fc', 'pointnet2'
+    "model_enc_args": {
+        "sa_settings": [ # setting for the set abstraction layers
+            {
+                "npoint": 32, # number of centroids to compute
+                "radius": 0.15, # radius for the query ball algorithm in meters
+                "nsample": 8, # number of points per query ball to keep
+                "filters": [ # MLP filters
+                    4,
+                    4,
+                    8
+                ],
+                "group_all": false, # discards the nsample and keep all points in the query ball if true
+                "replace_inf": false, # discard points that are inf. If you use replication_strategy to 'random', leave this to false
+                "verbose": false, # this will print the points to check that everything works. Keep false.
+                "unique": true, # see query_ball_point in tf_ops_utils for how this influences the net
+                "bn": true, # true to apply batch normalization in the MLP
+                "name": "sa_module_1"
+            }, ... # repeat as many times as you want, but make sure that npoint*filters[-1] is constant
+        ],
+        "post_dropout": 0.2 # apply dropout after set abstraction layers
+    },
+    "model_rnn_type": "unstacked_gru", # one among 'gru', 'identity', 'identity_last_frame', 'unstacked_gru', 'concat_gru', 'unstacked_lstm', 'concat_lstm', 'cnn_sequence'
+    "model_rnn_args": { # args for the rnn
+        "rnn_mode": "same", # same to share weights, parallel to not share, double to use double rnn etc. see keras_layers.UnstackedRnn
+        "units": -1, # from here on all parameters of gru/lstm
+        "activation": "tanh",
+        "kernel_initializer": "glorot_uniform",
+        "return_sequences": false,
+        "return_state": false,
+        "stateful": false,
+        "dropout": 0.2,
+        "kernel_regularizer": {
+            "name": "l2",
+            "value": 0.01
+        },
+        "recurrent_regularizer": {
+            "name": "l2",
+            "value": 0.01
+        },
+        "recurrent_dropout": 0.2
+    },
+    "model_dec_type": "pointnet2", # one among 'fc_base', 'fc_upconv', 'pointnet2', 'pointnet2_split'
+    "model_dec_args": {
+        "fp_settings": [ # args for feature propagation layers
+            {
+                "mlp": [ # add as many filters as you want
+                    32,
+                    32
+                ],
+                "bn": false, # true to apply batch normalization in the MLP
+                "name": "fp_module_1"
+            } # add as many MLP as SA layers
+        ],
+        "net_settings": [ # layers to add after the feature propagation layers
+            {
+                "type": "Conv2D",
+                "args": {
+                    "filters": 32,
+                    "kernel_size": [
+                        1,
+                        5
+                    ],
+                    "padding": "SAME" # always use padding='SAME' or bad things will happen
+                }
+            },
+            {
+                "type": "MaxPooling2D",
+                "args": {
+                    "pool_size": [
+                        1,
+                        4
+                    ],
+                    "padding": "SAME"
+                }
+            },
+            {
+                "type": "Reshape", # always add a reshape with target_shape=-1 for the final reshape. A final FC layer is automatically added at the end with the correct number of units dependent on the training mode.
+                "args": {
+                    "target_shape": -1
+                }
+            }
+        ],
+        "out_points": 30, # number of markers, if supervised
+        "append_xyz": false, # true to append the position of the last centroids to the FP layers features
+        "replace_inf": "zero", # 'zero' or 'first': if an invalid centroid is chosen (e.g. you did not have enough points) replace it with either 0 or the first centroid
+        "pre_dropout": 0.2, # apply dropout before FP layers
+        "post_dropout": 0.2 # apply dropout after FP layers
+    },
+    "model_loss": "selective_squared_dist", # model loss, see utils_model for a list
+    "model_optimizer": {
+        "name": "adadelta",
+        "learning_rate": 0.01
+    }
+}

@@ -1,0 +1,148 @@
+{
+    "model_prefix": "local",
+    "model_name": "P-NET2_7_p",
+    "model_type": "supervised",
+    "model_enc_type": "pointnet2",
+    "model_enc_args": {
+        "sa_settings": [
+            {
+                "npoint": 32,
+                "radius": 0.15,
+                "nsample": 8,
+                "filters": [
+                    4,
+                    4,
+                    8
+                ],
+                "group_all": false,
+                "replace_inf": false,
+                "verbose": false,
+                "unique": true,
+                "bn": true,
+                "name": "sa_module_1"
+            },
+            {
+                "npoint": 16,
+                "radius": 0.25,
+                "nsample": 8,
+                "filters": [
+                    8,
+                    8,
+                    16
+                ],
+                "group_all": false,
+                "replace_inf": false,
+                "verbose": false,
+                "unique": true,
+                "bn": true,
+                "name": "sa_module_2"
+            },
+            {
+                "npoint": 8,
+                "radius": 0.4,
+                "nsample": 8,
+                "filters": [
+                    16,
+                    16,
+                    32
+                ],
+                "group_all": false,
+                "replace_inf": false,
+                "verbose": false,
+                "unique": true,
+                "bn": true,
+                "name": "sa_module_3"
+            }
+        ],
+        "post_dropout": 0.2
+    },
+    "model_rnn_type": "unstacked_gru",
+    "model_rnn_args": {
+        "rnn_mode": "same",
+        "units": -1,
+        "activation": "tanh",
+        "kernel_initializer": "glorot_uniform",
+        "return_sequences": false,
+        "return_state": false,
+        "stateful": false,
+        "dropout": 0.2,
+        "kernel_regularizer": {
+            "name": "l2",
+            "value": 0.01
+        },
+        "recurrent_regularizer": {
+            "name": "l2",
+            "value": 0.01
+        },
+        "recurrent_dropout": 0.2
+    },
+    "model_dec_type": "pointnet2",
+    "model_dec_args": {
+        "fp_settings": [
+            {
+                "mlp": [
+                    32,
+                    32
+                ],
+                "bn": false,
+                "name": "fp_module_1"
+            },
+            {
+                "mlp": [
+                    32,
+                    16
+                ],
+                "bn": false,
+                "name": "fp_module_2"
+            },
+            {
+                "mlp": [
+                    16,
+                    16,
+                    16
+                ],
+                "bn": false,
+                "name": "fp_module_3"
+            }
+        ],
+        "net_settings": [
+            {
+                "type": "Conv2D",
+                "args": {
+                    "filters": 32,
+                    "kernel_size": [
+                        1,
+                        5
+                    ],
+                    "padding": "SAME"
+                }
+            },
+            {
+                "type": "MaxPooling2D",
+                "args": {
+                    "pool_size": [
+                        1,
+                        4
+                    ],
+                    "padding": "SAME"
+                }
+            },
+            {
+                "type": "Reshape",
+                "args": {
+                    "target_shape": -1
+                }
+            }
+        ],
+        "out_points": 30,
+        "append_xyz": false,
+        "replace_inf": "zero",
+        "pre_dropout": 0.2,
+        "post_dropout": 0.2
+    },
+    "model_loss": "selective_squared_dist",
+    "model_optimizer": {
+        "name": "adadelta",
+        "learning_rate": 0.01
+    }
+}
